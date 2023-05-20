@@ -34,9 +34,18 @@ func (p *productHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		p.put(w, r)
 	case "DELETE":
 		p.delete(w, r)
+	case "OPTIONS":
+		p.options(w, r)
 	default:
 		respondWithError(w, http.StatusMethodNotAllowed, "invalid method")
 	}
+}
+
+func (p *productHandler) options(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+    w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+    w.WriteHeader(http.StatusOK)
 }
 
 func (p *productHandler) get(w http.ResponseWriter, r *http.Request) {
